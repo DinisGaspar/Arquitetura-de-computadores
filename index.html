@@ -19,7 +19,6 @@
       </a>
       <nav class="main-nav" aria-label="Navegação principal">
         <a href="#aulas">Aulas</a>
-        <a href="#adicionar">Adicionar</a>
       </nav>
       <a class="header-link" href="#aulas">Ver aulas <span aria-hidden="true">↗</span></a>
     </header>
@@ -27,8 +26,9 @@
     <main>
       <section class="hero" id="inicio">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="pulse-dot"></span> Arquitetura de Computadores</p>
-          <h1>Portefólio das aulas de Arquitetura de Computadores</h1>
+          <p class="eyebrow"><span class="pulse-dot"></span> Portefólio</p>
+          <h1>Portefólio de Dinis Gaspar</h1>
+          <p class="hero-subtitle">Arquitetura de Computadores</p>
           <p class="hero-intro">Este espaço serve para registar os conteúdos aprendidos, os sumários das aulas e os comentários pessoais sobre cada lição.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#aulas">Explorar as aulas <span aria-hidden="true">↓</span></a>
@@ -59,44 +59,17 @@
           <label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Pesquisar aulas..." aria-label="Pesquisar aulas"></label>
           <div class="lesson-count"><span id="lesson-count">3</span> registos</div>
         </div>
-        <div class="lessons-grid" id="lessons-grid">
-          <article class="lesson-card featured" data-search="representação da informação binário aula 01" data-comment="Nesta aula aprendi como os dados são representados em binário e como a informação pode ser convertida em sinais digitais.">
-            <div class="card-top"><span class="lesson-number">01</span><span class="lesson-date">12 SET 2024</span></div>
-            <div class="card-body"><p class="card-tag">Fundamentos</p><h3>Representação da informação</h3><p>Como os computadores transformam números, texto e imagens em sequências de bits.</p></div>
-            <div class="lesson-comment"><h4>Comentário da aula</h4><p>Nesta aula aprendi como os dados são representados em binário e como a informação pode ser convertida em sinais digitais.</p></div>
-            <div class="card-footer"><span>Ver sumário</span><span class="arrow-circle" aria-hidden="true">↗</span></div>
-          </article>
-          <article class="lesson-card" data-search="componentes computador hardware aula 02" data-comment="Gostei de perceber como cada parte do computador tem uma função específica e como todas trabalham em conjunto para processar a informação.">
-            <div class="card-top"><span class="lesson-number">02</span><span class="lesson-date">19 SET 2024</span></div>
-            <div class="card-body"><p class="card-tag">Hardware</p><h3>O computador por dentro</h3><p>Uma primeira observação sobre o processador, a memória e os canais que os ligam.</p></div>
-            <div class="lesson-comment"><h4>Comentário da aula</h4><p>Gostei de perceber como cada parte do computador tem uma função específica e como todas trabalham em conjunto para processar a informação.</p></div>
-            <div class="card-footer"><span>Ver sumário</span><span class="arrow-circle" aria-hidden="true">↗</span></div>
-          </article>
-          <article class="lesson-card" data-search="sistemas numeração conversão binário aula 03" data-comment="Foi importante aprender a converter valores entre sistemas diferentes, porque isso ajuda a entender melhor como a máquina interpreta os dados.">
-            <div class="card-top"><span class="lesson-number">03</span><span class="lesson-date">26 SET 2024</span></div>
-            <div class="card-body"><p class="card-tag">Lógica</p><h3>Sistemas de numeração</h3><p>Conversões entre decimal, binário e hexadecimal: diferentes formas de dizer o mesmo valor.</p></div>
-            <div class="lesson-comment"><h4>Comentário da aula</h4><p>Foi importante aprender a converter valores entre sistemas diferentes, porque isso ajuda a entender melhor como a máquina interpreta os dados.</p></div>
-            <div class="card-footer"><span>Ver sumário</span><span class="arrow-circle" aria-hidden="true">↗</span></div>
-          </article>
-        </div>
+        <div class="lessons-grid" id="lessons-grid"></div>
         <p class="empty-state" id="empty-state" hidden>Não encontrei nenhuma aula com esse termo.</p>
       </section>
 
-      <section class="add-section" id="adicionar">
-        <div class="add-copy"><div class="section-kicker">03 / próximo registo</div><h2>A aula seguinte<br><em>começa aqui.</em></h2><p>Adiciona uma nova entrada ao teu caderno de bordo. Os dados ficam guardados neste navegador.</p></div>
-        <form class="lesson-form" id="lesson-form">
-          <label>Nome da lição<input id="lesson-title" type="text" placeholder="Ex.: A memória RAM" required></label>
-          <div class="form-row"><label>Número<input id="lesson-number" type="number" min="1" placeholder="04" required></label><label>Data<input id="lesson-date" type="text" placeholder="03 OUT 2024" required></label></div>
-          <label>Sumário<textarea id="lesson-summary" rows="3" placeholder="O que foi abordado na aula?" required></textarea></label>
-          <label>Comentário da aula<textarea id="lesson-comment" rows="4" placeholder="Escreve a tua opinião, o que aprendeste e o que achaste interessante." required></textarea></label>
-          <button class="button button-light" type="submit">Guardar nova aula <span aria-hidden="true">↗</span></button>
-          <p class="form-feedback" id="form-feedback" role="status"></p>
-        </form>
-      </section>
+
     </main>
 
     <footer class="site-footer"><span>© 2024</span><span>Portefólio de Arquitetura de Computadores</span><a href="#inicio">Voltar ao topo ↑</a></footer>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
