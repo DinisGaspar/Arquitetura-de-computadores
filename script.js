@@ -239,6 +239,11 @@ form.addEventListener('submit', async (event) => {
 
   const isUpdate = Boolean(editingCard);
   const card = editingCard || buildCard();
+  const previousLesson = isUpdate ? {
+    number: editingCard.dataset.number || '',
+    summary: editingCard.dataset.summary || '',
+    comment: editingCard.dataset.comment || '',
+  } : null;
   const number = numberInput || 'Aula';
   const formattedNumber = number
     .replace(/\s*e\s*/gi, ' e ')
@@ -264,32 +269,22 @@ form.addEventListener('submit', async (event) => {
   if (hasSupabaseConfig() && supabaseClient) {
     const payload = { number: numberInput, summary, comment };
 
-    if (isUpdate && editingCard) {
-      const currentNumber = editingCard.dataset.number || '';
-      const currentSummary = editingCard.dataset.summary || '';
-      const currentComment = editingCard.dataset.comment || '';
+    const result = isUpdate && previousLesson
+      ? await supabaseClient.from('lessons').update(payload).match(previousLesson)
+      : await supabaseClient.from('lessons').insert(payload);
 
-      await supabaseClient.from('lessons').update(payload).match({
-        number: currentNumber,
-        summary: currentSummary,
-        comment: currentComment,
-      });
-    } else {
-      await supabaseClient.from('lessons').insert(payload);
+    if (result.error) {
+      if (!isUpdate) {
+        card.remove();
+      }
+      saveLessons();
+      updateResults();
+      feedback.textContent = `Não foi possível guardar a aula: ${result.error.message}`;
+      return;
     }
 
-    const { data } = await supabaseClient.from('lessons').select('*').order('number', { ascending: true, nullsFirst: false });
-    grid.innerHTML = '';
-    data.forEach((lesson) => {
-      const lessonCard = buildCard({
-        number: lesson.number,
-        summary: lesson.summary,
-        comment: lesson.comment,
-      });
-      grid.appendChild(lessonCard);
-    });
-    sortCards();
     saveLessons();
+    sortCards();
     updateResults();
   } else {
     saveLessons();

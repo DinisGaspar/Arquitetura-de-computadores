@@ -1,15 +1,15 @@
 window.LESSON_CONFIG = {
-  url: 'https://czgcwbblsdncnnakbsvq.supabase.co/rest/v1/',
+  url: 'https://czgcwbblsdncnnakbsvq.supabase.co',
   key: 'sb_publishable_6hU8aWWLD_n8Vi4D_P6UhQ_YD3X73nn'
 };
 
-// Para activar o site público com dados partilhados:
-// 1. Cria um projeto no Supabase
-// 2. Cria a tabela lessons com colunas:
-//    id uuid primary key default gen_random_uuid()
-//    number text
-//    summary text
-//    comment text
-//    created_at timestamptz default now()
-// 3. Coloca aqui o URL e a anon key do projeto
-// 4. O site passa a partilhar as aulas para qualquer pessoa ver no mesmo link
+// ✅ IMPORTANTE:
+// - url deve ser o "Project URL" do Supabase (sem /rest/v1/)
+// - key deve ser a "anon public key" (não a secret key)
+// - usa a tabela lessons com estas colunas:
+//   id uuid default gen_random_uuid() primary key
+//   number text
+//   summary text
+//   comment text
+//   created_at timestamptz default now()
+// - Depois de preencheres os valores reais, o botão Guardar passa a funcionar.
