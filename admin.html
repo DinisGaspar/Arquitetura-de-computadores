@@ -1,4 +1,7 @@
-<!doctype html>
+alter table public.lessons
+add column if not exists comment text;
+
+notify pgrst, 'reload schema';<!doctype html>
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
@@ -38,7 +41,7 @@
         <p class="section-kicker">Admin</p>
         <h1 class="admin-title">Gestão do portefólio</h1>
       </div>
-      <a class="button button-light" href="index.html">Ver página pública</a>
+      <a class="button button-light" href="https://dinisgaspar.github.io/Arquitetura-de-computadores/index.html">Ver página pública</a>
     </header>
 
     <div class="admin-panel">
