@@ -87,13 +87,14 @@ function buildCard({ number = '', summary = '', comment = '' } = {}) {
   card.dataset.number = numberValue;
   card.dataset.summary = summaryValue;
   card.dataset.title = title;
-  card.innerHTML = '<div class="card-top"><span class="lesson-number"></span><div class="card-actions"><button class="edit-btn" type="button">Editar</button><button class="delete-btn" type="button">Apagar</button></div></div><div class="card-body"><p></p></div><div class="lesson-comment"><h4>Comentário da aula</h4><p></p></div>';
+  const actions = isAdminPage ? '<div class="card-actions"><button class="edit-btn" type="button">Editar</button><button class="delete-btn" type="button">Apagar</button></div>' : '';
+  card.innerHTML = `<div class="card-top"><span class="lesson-number"></span>${actions}</div><div class="card-body"><p></p></div><div class="lesson-comment"><h4>Comentário da aula</h4><p></p></div>`;
   card.querySelector('.lesson-number').textContent = title;
   card.querySelector('.card-body > p').textContent = summaryValue;
   card.querySelector('.lesson-comment p').textContent = commentValue;
 
   const editButton = card.querySelector('.edit-btn');
-  editButton.addEventListener('click', () => {
+  editButton?.addEventListener('click', () => {
     editingCard = card;
     document.querySelector('#lesson-number').value = card.dataset.number || '';
     document.querySelector('#lesson-summary').value = card.dataset.summary || '';
@@ -104,7 +105,7 @@ function buildCard({ number = '', summary = '', comment = '' } = {}) {
   });
 
   const deleteButton = card.querySelector('.delete-btn');
-  deleteButton.addEventListener('click', async () => {
+  deleteButton?.addEventListener('click', async () => {
     const shouldDelete = window.confirm('Queres apagar esta aula?');
     if (!shouldDelete) {
       return;
