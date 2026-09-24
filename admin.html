@@ -1,4 +1,7 @@
 alter table public.lessons
+add column if not exists date text;
+
+alter table public.lessons
 add column if not exists comment text;
 
 notify pgrst, 'reload schema';<!doctype html>

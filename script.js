@@ -61,6 +61,7 @@ function compareLessonNumbers(aValue, bValue) {
 function saveLessons() {
   const lessons = [...grid.querySelectorAll('.lesson-card')].map((card) => ({
     number: card.dataset.number || '',
+    date: card.dataset.date || '',
     summary: card.dataset.summary || '',
     comment: card.dataset.comment || '',
   }));
@@ -68,8 +69,9 @@ function saveLessons() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(lessons));
 }
 
-function buildCard({ number = '', summary = '', comment = '' } = {}) {
+function buildCard({ number = '', date = '', summary = '', comment = '' } = {}) {
   const numberValue = String(number || '').trim();
+  const dateValue = String(date || '').trim();
   const summaryValue = String(summary || '').trim();
   const commentValue = String(comment || '').trim();
   const formattedNumber = numberValue
@@ -78,18 +80,20 @@ function buildCard({ number = '', summary = '', comment = '' } = {}) {
     .replace(/\s+/g, ' ')
     .trim();
   const title = `Aula ${formattedNumber || 'Sem número'}`;
-  const searchTerms = `${summaryValue} ${commentValue} ${formattedNumber}`.toLowerCase();
+  const searchTerms = `${dateValue} ${summaryValue} ${commentValue} ${formattedNumber}`.toLowerCase();
   const card = document.createElement('article');
 
   card.className = 'lesson-card';
   card.dataset.search = searchTerms;
   card.dataset.comment = commentValue;
+  card.dataset.date = dateValue;
   card.dataset.number = numberValue;
   card.dataset.summary = summaryValue;
   card.dataset.title = title;
   const actions = isAdminPage ? '<div class="card-actions"><button class="edit-btn" type="button">Editar</button><button class="delete-btn" type="button">Apagar</button></div>' : '';
-  card.innerHTML = `<div class="card-top"><span class="lesson-number"></span>${actions}</div><div class="card-body"><p></p></div><div class="lesson-comment"><h4>Comentário da aula</h4><p></p></div>`;
+  card.innerHTML = `<div class="card-top"><span class="lesson-number"></span><span class="lesson-date"></span>${actions}</div><div class="card-body"><p></p></div><div class="lesson-comment"><h4>Comentário da aula</h4><p></p></div>`;
   card.querySelector('.lesson-number').textContent = title;
+  card.querySelector('.lesson-date').textContent = dateValue;
   card.querySelector('.card-body > p').textContent = summaryValue;
   card.querySelector('.lesson-comment p').textContent = commentValue;
 
@@ -97,6 +101,7 @@ function buildCard({ number = '', summary = '', comment = '' } = {}) {
   editButton?.addEventListener('click', () => {
     editingCard = card;
     document.querySelector('#lesson-number').value = card.dataset.number || '';
+    document.querySelector('#lesson-date').value = card.dataset.date || '';
     document.querySelector('#lesson-summary').value = card.dataset.summary || '';
     document.querySelector('#lesson-comment').value = card.dataset.comment || '';
     document.querySelector('#lesson-number').focus();
@@ -113,11 +118,13 @@ function buildCard({ number = '', summary = '', comment = '' } = {}) {
 
     if (hasSupabaseConfig() && supabaseClient) {
       const lessonNumber = card.dataset.number || '';
+      const lessonDate = card.dataset.date || '';
       const lessonSummary = card.dataset.summary || '';
       const lessonComment = card.dataset.comment || '';
 
       await supabaseClient.from('lessons').delete().match({
         number: lessonNumber,
+        date: lessonDate,
         summary: lessonSummary,
         comment: lessonComment,
       });
@@ -165,6 +172,7 @@ async function initSupabase() {
   data.forEach((lesson) => {
     const card = buildCard({
       number: lesson.number,
+      date: lesson.date,
       summary: lesson.summary,
       comment: lesson.comment,
     });
@@ -229,6 +237,7 @@ initSupabase();
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   const numberInput = document.querySelector('#lesson-number').value.trim();
+  const date = document.querySelector('#lesson-date').value.trim();
   const summary = document.querySelector('#lesson-summary').value.trim();
   const comment = document.querySelector('#lesson-comment').value.trim();
 
@@ -242,6 +251,7 @@ form.addEventListener('submit', async (event) => {
   const card = editingCard || buildCard();
   const previousLesson = isUpdate ? {
     number: editingCard.dataset.number || '',
+    date: editingCard.dataset.date || '',
     summary: editingCard.dataset.summary || '',
     comment: editingCard.dataset.comment || '',
   } : null;
@@ -252,7 +262,7 @@ form.addEventListener('submit', async (event) => {
     .replace(/\s+/g, ' ')
     .trim();
   const title = `Aula ${formattedNumber}`;
-  const searchTerms = `${summary} ${comment} ${formattedNumber}`.toLowerCase();
+  const searchTerms = `${date} ${summary} ${comment} ${formattedNumber}`.toLowerCase();
 
   if (!editingCard) {
     grid.appendChild(card);
@@ -260,15 +270,17 @@ form.addEventListener('submit', async (event) => {
 
   card.dataset.search = searchTerms;
   card.dataset.comment = comment;
+  card.dataset.date = date;
   card.dataset.number = numberInput;
   card.dataset.summary = summary;
   card.dataset.title = title;
   card.querySelector('.lesson-number').textContent = title;
+  card.querySelector('.lesson-date').textContent = date;
   card.querySelector('.card-body > p').textContent = summary;
   card.querySelector('.lesson-comment p').textContent = comment;
 
   if (hasSupabaseConfig() && supabaseClient) {
-    const payload = { number: numberInput, summary, comment };
+    const payload = { number: numberInput, date, summary, comment };
 
     const result = isUpdate && previousLesson
       ? await supabaseClient.from('lessons').update(payload).match(previousLesson)

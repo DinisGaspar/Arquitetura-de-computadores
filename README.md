@@ -11,7 +11,7 @@ O site público permite consultar e pesquisar as aulas. O painel de administraç
 
 ## Funcionalidades
 
-- Registo de número, sumário e comentário de cada aula.
+- Registo de número, data, sumário e comentário de cada aula.
 - Pesquisa de aulas por texto.
 - Ordenação automática por número da aula.
 - Persistência dos dados através do Supabase.
@@ -46,6 +46,7 @@ A tabela utilizada pelo projeto chama-se `lessons` e deve conter estas colunas:
 | --- | --- |
 | `id` | `uuid` |
 | `number` | `text` |
+| `date` | `text` |
 | `summary` | `text` |
 | `comment` | `text` |
 | `created_at` | `timestamptz` |
