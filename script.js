@@ -58,6 +58,23 @@ function compareLessonNumbers(aValue, bValue) {
   return 0;
 }
 
+function formatCreatedDate(value) {
+  if (!value) {
+    return '';
+  }
+
+  const createdDate = new Date(value);
+  if (Number.isNaN(createdDate.getTime())) {
+    return '';
+  }
+
+  return new Intl.DateTimeFormat('pt-PT', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  }).format(createdDate).replace('.', '').toUpperCase();
+}
+
 function saveLessons() {
   const lessons = [...grid.querySelectorAll('.lesson-card')].map((card) => ({
     number: card.dataset.number || '',
@@ -172,7 +189,7 @@ async function initSupabase() {
   data.forEach((lesson) => {
     const card = buildCard({
       number: lesson.number,
-      date: lesson.date,
+      date: lesson.date || formatCreatedDate(lesson.created_at),
       summary: lesson.summary,
       comment: lesson.comment,
     });
